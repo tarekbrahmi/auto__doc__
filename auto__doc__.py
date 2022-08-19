@@ -14,7 +14,13 @@ class MakeDoc:
     def __init__(self, walk_dir: str):
         self.walk_dir = walk_dir
 
-    def get_doc__class(self, _class_membres_dict: dict) -> str:
+    def set_doc__class(self, _class_membres_dict: dict) -> str:
+        return ""
+
+    def set_doc__files(self, _class_membres_dict: dict) -> str:
+        return ""
+
+    def set_doc__dir(self, _class_membres_dict: dict) -> str:
         return ""
 
     def get_doc__class(self, _class: ast.ClassDef) -> dict:
