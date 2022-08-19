@@ -106,7 +106,7 @@ class MakeDoc:
         model_class_membres_dict.setdefault(class_name, model_class_members)
         return model_class_membres_dict
 
-    def get_doc__file(self, file):
+    def get_doc__file(self, file: str) -> None:
         with open(file, "r") as f:
             p = ast.parse(f.read())
             # get all classes from the given python file.(models.py)
@@ -116,9 +116,16 @@ class MakeDoc:
                 print(self.set_doc__class(self.get_doc__class(_class)))
 
     def get_doc_dir(self):
-        pass
+        os.chdir(self.walk_dir)
+        for root, dirs, files in os.walk(os.getcwd(), topdown=False):
+            for file in files:
+                if file == "models.py":
+                    # print(os.path.join(root, file))
+                    try:
+                        self.get_doc__file(os.path.join(root, file))
+                    except Exception as e:
+                        pass
 
 
-makeDoc = MakeDoc("/")
-
-
+makeDoc = MakeDoc("/home")
+makeDoc.get_doc_dir()
