@@ -2,7 +2,7 @@ import ast
 import os
 
 django_models_fields = ['AutoField', 'BigAutoField', 'BigIntegerField', 'BinaryField', 'BooleanField', 'CharField', 'DateField', 'DateTimeField', 'DecimalField', 'DurationField', 'EmailField', 'FileField', 'FilePathField', 'FloatField', 'GenericIPAddressField', 'IPAddressField',
-'ImageField', 'IntegerField', 'JSONField', 'PositiveIntegerField', 'PositiveBigIntegerField', 'PositiveSmallIntegerField', 'SlugField', 'SmallAutoField', 'SmallIntegerField', 'TextField', 'TimeField', 'URLField', 'UUIDField', 'ForeignKey', 'ManyToManyField', 'OneToOneField']
+                        'ImageField', 'IntegerField', 'JSONField', 'PositiveIntegerField', 'PositiveBigIntegerField', 'PositiveSmallIntegerField', 'SlugField', 'SmallAutoField', 'SmallIntegerField', 'TextField', 'TimeField', 'URLField', 'UUIDField', 'ForeignKey', 'ManyToManyField', 'OneToOneField']
 
 django_models_fields_desc = [
     "An IntegerField that automatically increments according to available IDs",
@@ -38,6 +38,8 @@ django_models_fields_desc = [
     "A many-to-many relationship",
     "A one-to-one relationship. Conceptually, this is similar to a ForeignKey with unique=True, but the “reverse” side of the relation will directly return a single object."
 ]
+all_models_fields_types_desc = dict(
+    zip(django_models_fields, django_models_fields_desc))
 
 
 def assert_Store(ast_) -> bool: return isinstance(ast_, ast.Store)
@@ -53,7 +55,12 @@ class MakeDoc:
         self.walk_dir = walk_dir
 
     def set_doc__class(self, _class_membres_dict: dict) -> str:
-        formatted_class = ""
+        def formatted_class_member(s): return "\n".join([s.get(
+            "member_name") + " : "+s.get("member_type"), s.get('member_verbose_name')])
+        
+        formatted_class = '\n'.join([formatted_class_member(
+            member) for member in list(_class_membres_dict.values())[0]])
+        
         return f"""
                 Attributes
                 ----------
@@ -97,7 +104,7 @@ class MakeDoc:
                         model_class_members.append({
                             "member_name": assign_targets_Name_id,
                             "member_type": _member.value.func.attr,
-                            "member_verbose_name": "Not set"
+                            "member_verbose_name": all_models_fields_types_desc.get(_member.value.func.attr)
                         })
         model_class_membres_dict.setdefault(class_name, model_class_members)
         return model_class_membres_dict
@@ -108,11 +115,12 @@ class MakeDoc:
             # get all classes from the given python file.(models.py)
             classes = [_class for _class in ast.walk(
                 p) if assert_ClassDef(_class)]
-            print(self.get_doc__class(classes[0]))
+            print(self.set_doc__class(self.get_doc__class(classes[0])))
 
     def get_doc_dir(self):
         pass
 
 
 makeDoc = MakeDoc("/")
+
 
