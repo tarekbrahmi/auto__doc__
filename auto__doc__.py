@@ -57,16 +57,12 @@ class MakeDoc:
         # print(list(_class_membres_dict.keys())[0])
 
         def formatted_class_member(s: dict) -> str:
-            return "\n".join([s.get("member_name") + " : "+s.get("member_type"), s.get('member_verbose_name')])
+            return "\n".join(["\t"+s.get("member_name") + " : "+s.get("member_type"), "\t\t"+s.get('member_verbose_name')])
 
         formatted_class = '\n'.join([formatted_class_member(
             member) for member in list(_class_membres_dict.values())[0]])
 
-        return f"""
-                Attributes
-                ----------
-                {formatted_class}
-            """ if len(formatted_class) else ""
+        return f"""Attributes\n----------\n{formatted_class}""" if len(formatted_class) else ""
 
     def set_doc__files(self, _class_membres_dict: dict) -> str:
         return ""
