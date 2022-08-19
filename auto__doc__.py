@@ -21,7 +21,6 @@ django_models_fields_desc = [
     "A floating-point number represented in Python by a float instance.",
     "An IPv4 or IPv6 address, in string format (e.g. 192.0.2.30 or 2a02:42fe::4).",
     "An IPv4 or IPv6 address, in string format (e.g. 192.0.2.30 or 2a02:42fe::4).",
-    "An IPv4 or IPv6 address, in string format (e.g. 192.0.2.30 or 2a02:42fe::4).",
     "Inherits all attributes and methods from FileField, but also validates that the uploaded object is a valid image.",
     "An integer. Values from -2147483648 to 2147483647 are safe in all databases supported by Django.",
     "A field for storing JSON encoded data.",
