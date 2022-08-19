@@ -55,17 +55,19 @@ class MakeDoc:
         self.walk_dir = walk_dir
 
     def set_doc__class(self, _class_membres_dict: dict) -> str:
-        def formatted_class_member(s): return "\n".join([s.get(
-            "member_name") + " : "+s.get("member_type"), s.get('member_verbose_name')])
-        
+        # print(list(_class_membres_dict.keys())[0])
+
+        def formatted_class_member(s: dict) -> str:
+            return "\n".join([s.get("member_name") + " : "+s.get("member_type"), s.get('member_verbose_name')])
+
         formatted_class = '\n'.join([formatted_class_member(
             member) for member in list(_class_membres_dict.values())[0]])
-        
+
         return f"""
                 Attributes
                 ----------
                 {formatted_class}
-            """
+            """ if len(formatted_class) else ""
 
     def set_doc__files(self, _class_membres_dict: dict) -> str:
         return ""
@@ -114,8 +116,9 @@ class MakeDoc:
             p = ast.parse(f.read())
             # get all classes from the given python file.(models.py)
             classes = [_class for _class in ast.walk(
-                p) if assert_ClassDef(_class)]
-            print(self.set_doc__class(self.get_doc__class(classes[0])))
+                p) if assert_ClassDef(_class) and _class.name != "Meta"]
+            for _class in classes:
+                print(self.set_doc__class(self.get_doc__class(_class)))
 
     def get_doc_dir(self):
         pass
