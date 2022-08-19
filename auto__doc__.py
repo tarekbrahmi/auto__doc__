@@ -14,6 +14,9 @@ class MakeDoc:
     def __init__(self, walk_dir: str):
         self.walk_dir = walk_dir
 
+    def get_doc__class(self, _class_membres_dict: dict) -> str:
+        return ""
+
     def get_doc__class(self, _class: ast.ClassDef) -> dict:
 
         membres_list = [xx for xx in ast.walk(_class) if assert_Assign(xx)]
@@ -62,4 +65,5 @@ class MakeDoc:
         pass
 
 
+makeDoc = MakeDoc("/")
 
