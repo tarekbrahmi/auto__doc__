@@ -1,8 +1,7 @@
--- ASDL's 4 builtin types are:
--- identifier, int, string, constant
+ASDL's 4 builtin types are:
+identifier, int, string, constant
 
 module Python
-{
     mod = Module(stmt* body, type_ignore* type_ignores)
         | Interactive(stmt* body)
         | Expression(expr body)
@@ -141,4 +140,3 @@ module Python
              attributes (int lineno, int col_offset, int end_lineno, int end_col_offset)
 
     type_ignore = TypeIgnore(int lineno, string tag)
-}
